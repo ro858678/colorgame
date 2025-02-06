@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Guessing Game</title>
+    <style>
+        body {
+            background-size: cover;
+            background-image: url(3D-purple-ball-shape_3840x2160.jpg);
+            font-family: Arial, sans-serif;
+            text-align: center;
+            animation: change 50s infinite ease-in-out;
+        }
+        #gameFrame {
+            overflow: hidden;
+            background-size: cover;
+            background-image: url(4k-ultra-hd-wallpapers-for-pc.png);
+            width: 400px;
+            color: aliceblue;
+            margin: auto;
+            padding: 50px;
+            border: 2px solid black;
+            border-radius: 13px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+           
+        }
+        #colorBox {
+            margin-bottom: 30px;
+            border-radius: 8px;
+            width: 260px;
+            height: 40px;
+            margin: 50px auto;
+            border: 2px solid black;
+        }
+        .color-options {
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px;
+        }
+        .color-button {
+            border-radius: 8px;
+            width: 80px;
+            height: 40px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .color-button:hover {
+            transform: scale(1.1);
+        }
+        #gameStatus {
+            font-size: 18px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+       
+        #newGameButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        @keyframes change{
+          0%
+          {
+            background-image: url(14.jpg);
+          }  
+          20%
+          {
+            background-image: url(5lightning5.jpg);
+          }
+        }
+    </style>
+</head>
+<body>
+    <div id="gameFrame">
+        <h1>Color Guessing Game</h1>
+        <h2 data-testid="gameInstructions">Guess the correct color!</h2>
+        <div id="colorBox" data-testid="colorBox"></div>
+        <div class="color-options" id="colorOptions"></div>
+        <p id="gameStatus" data-testid="gameStatus"></p>
+        <p>Score: <span id="score" data-testid="score">0</span></p>
+        <button id="newGameButton" data-testid="newGameButton">New Game</button>
+    </div>
+    
+    <script>
+        const colors = ["red", "blue", "green", "yellow", "purple", "orange", "pink", "cyan"];
+        let targetColor = "";
+        let score = 0;
+
+        function startGame() {
+            targetColor = colors[Math.floor(Math.random() * colors.length)];
+            document.getElementById("colorBox").style.backgroundColor = targetColor;
+            document.getElementById("gameStatus").textContent = "";
+
+            const optionsContainer = document.getElementById("colorOptions");
+            optionsContainer.innerHTML = "";
+            
+            colors.sort(() => Math.random() - 0.5).slice(0, 6).forEach(color => {
+                const button = document.createElement("button");
+                button.classList.add("color-button");
+                button.style.backgroundColor = color;
+                button.setAttribute("data-testid", "colorOption");
+                button.onclick = () => checkGuess(color);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function checkGuess(selectedColor) {
+            if (selectedColor === targetColor) {
+                document.getElementById("gameStatus").textContent = "Correct!";
+                score++;
+                document.getElementById("score").textContent = score;
+            } else {
+                document.getElementById("gameStatus").textContent = "Wrong! Try again.";
+            }
+        }
+
+        document.getElementById("newGameButton").addEventListener("click", startGame);
+        startGame();
+    </script>
+</body>
+</html>
